@@ -72,4 +72,4 @@ Provide instructions and tips for visitors on how to get started with blacksmith
 * Media demonstrating tasks as they are completed
 
 ### Similar Sites
-I have not idea, I hade to learn by gleaning web 1.0 forums for details and watching youtube videos made by crusty old blacksmiths.
+I have no idea, I hade to learn by gleaning web 1.0 forums for details and watching youtube videos made by crusty old blacksmiths.
