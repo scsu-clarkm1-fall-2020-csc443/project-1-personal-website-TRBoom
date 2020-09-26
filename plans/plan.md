@@ -23,9 +23,9 @@ Computer Nerds and others who are interested in Machine Learning, Transformers, 
 * Explanations of what a transformer is and other machine learning techniques
 
 ### Similar Sites
-http://jalammar.github.io/illustrated-transformer/
-http://jalammar.github.io/a-visual-guide-to-using-bert-for-the-first-time/
-http://jalammar.github.io/illustrated-bert/
+* http://jalammar.github.io/illustrated-transformer/
+* http://jalammar.github.io/a-visual-guide-to-using-bert-for-the-first-time/
+* http://jalammar.github.io/illustrated-bert/
 
 ## My Absurd Fat Dog
 
