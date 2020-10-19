@@ -28,7 +28,7 @@ Just a bio
 
 ## Site Map
 
-<img src="img/siteMap.jpg">
+<img src="img/sitemap.jpg">
 
 ## Color Scheme
 
