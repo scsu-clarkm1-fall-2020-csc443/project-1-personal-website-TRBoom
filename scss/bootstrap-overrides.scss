@@ -1,0 +1,31 @@
+// Bootstrap Theme Customization
+
+
+// Override theme colors or add new
+$theme-colors: (
+    'primary': #2e2e2e,
+    'secondary': #f0ebff,
+    'exciting': #000000,
+);
+
+$body-bg: #2e2e2e;
+$body-color: #f0ebff;
+
+// Modify/add width/height sizes
+$sizes: (
+    40: 400%,
+);
+
+
+
+// Modify spacing rules
+$spacer: 2rem;
+
+// Misc variables to customize
+$enable-rounded: false;
+// $enable-shadows: true;
+// $body-bg: red; //body background
+// $body-color: green; //body text color
+
+// Include main bootstrap SASS file
+@import "./bootstrap/bootstrap.scss";

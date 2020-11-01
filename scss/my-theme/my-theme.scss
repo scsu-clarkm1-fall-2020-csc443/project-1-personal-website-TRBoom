@@ -1,0 +1,22 @@
+// All your styles (after you customize Bootstrap) go here
+.jumbotron {
+    background-color: theme-color('primary');
+    color: theme-color('secondary');
+}
+
+.card .card-body {
+    background-color: theme-color-level('primary', 10);
+}
+
+.navbar-brand{
+    color:theme-color('secondary')!important;
+    background-color: theme-color('primary');
+}
+.nav-link {
+    color:theme-color('secondary')!important;
+    background-color: theme-color('primary');
+    }
+.navbar{
+    color:theme-color('secondary')!important;
+    background-color: theme-color('primary');
+}
