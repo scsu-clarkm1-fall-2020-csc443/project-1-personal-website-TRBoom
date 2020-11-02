@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS derived from SASS build process -->
+    <link rel="stylesheet" href="./assets/css/app.css">
+    <title>Transformers, more than meets the eye</title>
+</head>
+
+<body>
+    <header class="mb-0 p-0">
+        <nav class="navbar navbar-expand-lg fixed-top">
+            <div class="container">
+                <a class="navbar-brand">Website Navigation</a>
+                <button class="navbar-toggler " type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon navbar-brand">Menu</span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="./index.html">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="./machine.html">Machine Learning<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="./tutorial.html">Transformer Tutorial<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="./resources.html">Resources<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="./about.html">About<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Section Select
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="#section1">Coin Sorting</a>
+                                <a class="dropdown-item" href="#section2">Accuracy and Dataset</a>
+                                <a class="dropdown-item" href="#section3">How Good Are They?</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Back to top</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <br>
+    <section class="m-0 p-4 body-primary">
+        <div class="container">
+            <h2 class="mb-3">Introduction</h2>
+            <p>In Machine Learning we must teach the machine, or the machine must otherwise learn. We use a lot of math to do this, graphics cards, and some friendly help from google. 
+                <a href="https://colab.research.google.com/">Google Colabs</a> is a colabrative labratory for public use. Which means it's free, but you might not always get the best. 
+                Colabs allows users to remotely access a computer system and run code on it. These computer systems have access to power graphic processor untis or tensor processing units,
+                both of which we can use, but we will be using GPUs. 
+
+            </p>
+        </div>
+    </section>
+    <br id='section1'>
+    <section  class="m-0 p-4 body-primary">
+        <div class="container">
+            <h3 class="mb-3" >Coin Sorting</h3>
+            <p>I'm going to describe Machine Learning as machine see, machine do. To start with you give your machine a bunch of data, pictures, sensor inputs, imdb ratings, what have you,
+                and ask it to tell you what category it falls into. After it tells you its guess you tell it how correct or incorrect it was. It then tries again, changing it's equations slightly 
+            to do a better job. The math sort of looks like this Y=W<sub>1</sub>X<sub>1</sub>+W<sub>2</sub>X<sub>2</sub>+B where X<sub>1</sub> and X<sub>2</sub> are the input variables (the brightness
+            of a pixel, the length of a fish, the distance to an object) and W<sub>1</sub> and W<sub>2</sub> are weights and B is a bias. The machine will slowly change W<sub>1</sub>,
+             W<sub>2</sub>, and B till it has a line where everything on one side is only one thing, or close enough. More inputs? More Xs. Think of the process as a coin sorter bank, every coin has to go into the proper
+            spot, so it builds a coin sorter, tests how well it did, and then rearranges the parts to test again. This repeats until it's accurate enough. This is our model.</p>
+            <img src="./img/coin.jpg" alt="Coin AI">
+        </div>
+        
+    </section>
+    <br id='section2'>
+    <section class="m-0 p-4 body-primary">
+        <div class="container">
+            <h3 class="mb-3" >Accuracy and Dataset</h3>
+            <p>Our model is graded on it's accuracy and it will generally improve over time. It is possible for it to get too good, we call this overfitting. It has trained
+                for so long on our data that it can't properly sort new data. To work around this we split our data into three categories, train, validate, and test. The training data is used to 
+                train the model, the validatation data is used to test the train results, and the test is used to test our end model so we can say look how good we've done. 
+            </p>
+        </div>
+    </section>
+    <br id='section3'>
+    <section class="m-0 p-4 body-primary">
+        <div class="container">
+            <h3 class="mb-3" >How Good Are They?</h3>
+            <p>So how good can we make these things? Better than us, like way better than us. In a small expirement I performed, my lie detector AI guessed 90% correctly. I only guessed 
+                10% correctly. So a bit better than we are depending on the task. 
+            </p>
+        </div>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+        crossorigin="anonymous"></script>
+    <script src="./assets/js/app.js"></script>
+</body>
+
+</html>

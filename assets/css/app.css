@@ -131,11 +131,11 @@ sup {
   top: -.5em; }
 
 a {
-  color: #2e2e2e;
+  color: #a18eda;
   text-decoration: none;
   background-color: transparent; }
   a:hover {
-    color: #080808;
+    color: #7154c7;
     text-decoration: underline; }
 
 a:not([href]):not([class]) {
@@ -2321,10 +2321,10 @@ fieldset:disabled a.btn {
 
 .btn-link {
   font-weight: 400;
-  color: #2e2e2e;
+  color: #a18eda;
   text-decoration: none; }
   .btn-link:hover {
-    color: #080808;
+    color: #7154c7;
     text-decoration: underline; }
   .btn-link:focus, .btn-link.focus {
     text-decoration: underline; }
@@ -3556,12 +3556,12 @@ input[type="button"].btn-block {
   padding: 0.5rem 0.75rem;
   margin-left: -1px;
   line-height: 1.25;
-  color: #2e2e2e;
+  color: #a18eda;
   background-color: #fff;
   border: 1px solid #dee2e6; }
   .page-link:hover {
     z-index: 2;
-    color: #080808;
+    color: #7154c7;
     text-decoration: none;
     background-color: #e9ecef;
     border-color: #dee2e6; }
@@ -7730,3 +7730,8 @@ a.text-exciting:hover, a.text-exciting:focus {
 .navbar {
   color: #f0ebff !important;
   background-color: #2e2e2e; }
+
+.pre-code {
+  color: #f0ebff;
+  display: block;
+  padding: 20px; }

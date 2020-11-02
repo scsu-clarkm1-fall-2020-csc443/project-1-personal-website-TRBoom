@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS derived from SASS build process -->
+    <link rel="stylesheet" href="./assets/css/app.css">
+    <title>Transformers, more than meets the eye</title>
+</head>
+
+<body>
+    <header class="mb-0 p-0">
+        <nav class="navbar navbar-expand-lg fixed-top">
+            <div class="container">
+                <a class="navbar-brand">Website Navigation</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon navbar-brand">Menu</span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="./index.html">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="./machine.html">Machine Learning<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="./tutorial.html">Transformer Tutorial<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="./resources.html">Resources<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="./about.html">About<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Section Select
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="#section1">Initializing</a>
+                                <a class="dropdown-item" href="#section2">Dataset Pre Work</a>
+                                <a class="dropdown-item" href="#section3">Tokenization</a>
+                                <a class="dropdown-item" href="#section4">Objects and Functions</a>
+                                <a class="dropdown-item" href="#section5">The Transformer</a>
+                                <a class="dropdown-item" href="#section6">Testing and K-fold</a>
+                                <a class="dropdown-item" href="#section7">Results</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Back to top</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <br>
+    <section class="m-0 p-4 body-primary">
+        <div class="container">
+            <h2 class="mb-3">Introduction</h2>
+            <p><a href="https://colab.research.google.com/drive/1kyQknNZ0IbaP4qQHBrU_Dh3GUKpHO7_E#scrollTo=6ANJr3uNw6zC">The Colab with full Code</a>: When you open this make sure you
+            save a copy of it in your own google drive via the 'File' menu.</p>
+        </div>
+    </section>
+    <br id='section1'>
+    <section  class="m-0 p-4 body-primary">
+        <div class="container">
+            <h3 class="mb-3" >Initializing</h3>
+            <p> We're going to start with the setup. The following codes initialize and install the necessary supporting code for the Transformer to run. The big ones are the Transformer 
+                library made by Huggingface and the tokenizer from the same. It also downloads the repository where we will get our data. 
+                <pre class="pre-code">
+                    <code>
+                        !pip install ipython-autotime
+                        %load_ext autotime
+                        !git clone https://github.com/TRBoom/Fake-News-Transformers
+                        !pip install transformers
+                        import pandas  as pd
+                        import tensorflow as tf
+                        from transformers import DistilBertTokenizerFast
+                        from sklearn.metrics import accuracy_score, precision_recall_fscore_support
+                        from sklearn.metrics import confusion_matrix
+                        from csv import DictReader
+                        from sklearn.model_selection import train_test_split
+                        tokenizer = DistilBertTokenizerFast.from_pretrained('distilbert-base-uncased')
+                        import torch
+                        from transformers import DistilBertForSequenceClassification, Trainer, TrainingArguments
+                    </code>
+                  </pre>
+                  This bit of code pulls the file from the downloaded github repository and assigns it to a variable. With this we're ready to get started. 
+
+
+                  <pre class="pre-code">
+                    <code>
+                        %cd Fake-News-Transformers/Datasets
+                        %ls
+                        file = "LiarLiarDataset_Full.csv"
+                    </code>
+                  </pre>
+            </p>
+        </div>
+    </section>
+    <br id='section2'>
+    <section class="m-0 p-4 body-primary">
+        <div class="container">
+            <h3 class="mb-3" >Dataset Pre Work</h3>
+            <p>This piece of code goes through the data and renames all the categories to integers. This is necessary for the model, the categories must be integers. 
+                At the end of the code we seperate all of our data into training, validation, and test sets. 
+                <pre class="pre-code">
+                    <code>
+                        #Build train, test, and validate all from one dataset file
+                        data_texts,data_labels=[],[]
+                        with open(file) as f:
+                            for row in  DictReader(f):
+                                data_texts.append(row["Text"])
+                                if row["Label"] == "TRUE":
+                                  data_labels.append(0)
+                                elif row["Label"] == "mostly-true":
+                                  data_labels.append(1)
+                                elif row["Label"] == "half-true":
+                                  data_labels.append(2)
+                                elif row["Label"] == "barely-true":
+                                  data_labels.append(3) 
+                                elif row["Label"] == "FALSE":
+                                  data_labels.append(4) 
+                                elif row["Label"] == "pants-fire":
+                                  data_labels.append(5) 
+                                else:
+                                  data_labels.append(6)
+                        train_texts, val_texts, train_labels, val_labels = train_test_split(data_texts, data_labels, test_size=.2)
+                        train_texts, test_texts, train_labels, test_labels = train_test_split(train_texts, train_labels, test_size=.1)
+                    </code>
+                  </pre>
+                  This will give us a total count of all label types. 
+                  <pre class="pre-code">
+                    <code>
+                        print("Count:",len(data_labels))
+                        print("True:",data_labels.count(0),
+                            "mostly-true:",data_labels.count(1),
+                            "half-true:",data_labels.count(2),
+                            "barely-true:",data_labels.count(3),
+                            "flase:",data_labels.count(4),
+                            "Pants-fire:",data_labels.count(5),
+                            "Unknown:",data_labels.count(6))
+                        print(val_labels)
+                    </code>
+                  </pre>
+            </p>
+        </div>
+    </section>
+    <br id='section3'>
+    <section class="m-0 p-4 body-primary">
+        <div class="container">
+            <h3 class="mb-3" >Tokenization</h3>
+            <p>Here we do tokenization, a process of converting the words in the text of our data set into unique integer values. 
+                <pre class="pre-code">
+                    <code>
+                        train_encodings = tokenizer(train_texts, truncation=True, padding=True)
+                        val_encodings = tokenizer(val_texts, truncation=True, padding=True)
+                        test_encodings = tokenizer(test_texts, truncation=True, padding=True)
+                    </code>
+                  </pre>
+                  Here we have an example of what tokenization looks like. 
+                  <pre class="pre-code">
+                    <code>
+                        sample_txt="My fat dog oozes affection from almost every pore, for food. Whenever I'm opening a can or cooking a meal he's right there with me."
+                        tokens = tokenizer.tokenize(sample_txt)
+                        token_ids = tokenizer.convert_tokens_to_ids(tokens)
+                        print(f' Sentence: {sample_txt}')
+                        print(f'   Tokens: {tokens}')
+                        print(f'Token IDs: {token_ids}')
+                    </code>
+                  </pre>
+                  Output:
+                  <pre class="pre-code">
+                    <code>
+                        Sentence: My fat dog oozes affection from almost every pore, for food. Whenever I'm discussing a can or cooking a meal he's right there with me.
+                        Tokens: ['my', 'fat', 'dog', 'o', '##oz', '##es', 'affection', 'from', 'almost', 'every', 'por', '##e', ',', 'for', 'food', '.', 'whenever', 'i', "'", 'm', 'discussing', 'a', 'can', 'or', 'cooking', 'a', 'meal', 'he', "'", 's', 'right', 'there', 'with', 'me', '.']
+                        Token IDs: [2026, 6638, 3899, 1051, 18153, 2229, 12242, 2013, 2471, 2296, 18499, 2063, 1010, 2005, 2833, 1012, 7188, 1045, 1005, 1049, 10537, 1037, 2064, 2030, 8434, 1037, 7954, 2002, 1005, 1055, 2157, 2045, 2007, 2033, 1012]
+                    </code>
+                  </pre>
+                  Here is a sample from our dataset, original statement with it's category along with it's tokenization. 
+                  <pre class="pre-code">
+                    <code>
+                        label_list=["True",
+                            "mostly-true",
+                            "half-true",
+                            "barely-true",
+                            "flase",
+                            "Pants-fire",
+                            "Unknown"]
+                        for i in range(5):
+                            sample_txt=train_texts[i]
+                            tokens = tokenizer.tokenize(sample_txt)
+                            token_ids = tokenizer.convert_tokens_to_ids(tokens)
+                            print(f' Sentence: {sample_txt}', label_list[train_labels[i]])
+                            print(f'   Tokens: {tokens}')
+                            print(f'Token IDs: {token_ids}')
+                    </code>
+                  </pre>
+            </p>
+        </div>
+    </section>
+    <br id='section4'>
+    <section class="m-0 p-4 body-primary">
+        <div class="container">
+            <h3 class="mb-3" >Objects and Functions</h3>
+            <p>Here we establish a dataset object to feed our data into Torch, the interface between the data and the GPU. 
+                <pre class="pre-code">
+                    <code>
+                        class FakeNewsDataset(torch.utils.data.Dataset):
+                            def __init__(self, encodings, labels):
+                                self.encodings = encodings
+                                self.labels = labels
+                    
+                            def __getitem__(self, idx):
+                                item = {key: torch.tensor(val[idx]) for key, val in self.encodings.items()}
+                                item['labels'] = torch.tensor(self.labels[idx])
+                                return item
+                    
+                            def __len__(self):
+                                return len(self.labels)
+                    
+                        train_dataset = FakeNewsDataset(train_encodings, train_labels)
+                        val_dataset = FakeNewsDataset(val_encodings, val_labels)
+                        test_dataset = FakeNewsDataset(test_encodings, test_labels)
+                    </code>
+                  </pre>
+                  This will allow us to see the metrics of our transformer. 
+                  <pre class="pre-code">
+                    <code>
+                        def compute_metrics(pred):
+                            labels = pred.label_ids
+                            preds = pred.predictions.argmax(-1)
+                            precision, recall, f1, _ = precision_recall_fscore_support(labels, preds, average='weighted')
+                            acc = accuracy_score(labels, preds)
+                            return {
+                                'accuracy': acc,
+                                'f1': f1,
+                                'precision': precision,
+                                'recall': recall
+                            }
+                    </code>
+                  </pre>
+            </p>
+        </div>
+    </section>
+    <br id='section5'>
+    <section class="m-0 p-4 body-primary">
+        <div class="container">
+            <h3 class="mb-3" >The Transformer</h3>
+            <p>Here are our settings for the pre-trained transformer. To save on time we'll use distilbert-base-uncased, a model trained by reading wikipedia and books.
+                <pre class="pre-code">
+                    <code>
+                        #setting variables
+                        from transformers import DistilBertForSequenceClassification, Trainer, TrainingArguments
+                        
+                        training_args = TrainingArguments(
+                            output_dir='./results',          # output directory
+                            num_train_epochs=6,              # total number of training epochs
+                            per_device_train_batch_size=8,  # batch size per device during training
+                            per_device_eval_batch_size=64,   # batch size for evaluation
+                            warmup_steps=500,                # number of warmup steps for learning rate scheduler
+                            weight_decay=0.01,               # strength of weight decay
+                            logging_dir='./logs',            # directory for storing logs
+                            logging_steps=10
+                        )
+                        
+                        model = DistilBertForSequenceClassification.from_pretrained("distilbert-base-uncased",num_labels = 6)
+                        
+                        trainer = Trainer(
+                            model=model,                         # the instantiated Transformers model to be trained
+                            args=training_args,                  # training arguments, defined above
+                            train_dataset=train_dataset,         # training dataset
+                            eval_dataset=val_dataset             # evaluation dataset
+                            
+                        )
+                    </code>
+                  </pre>
+            </p>
+        </div>
+    </section>
+    <br id='section6'>
+    <section class="m-0 p-4 body-primary">
+        <div class="container">
+            <h3 class="mb-3" >Testing and K-fold</h3>
+            <p>This is our testing set up. We will be using k-fold validation, we test our data 5 times with different portions as the test set every time. Afterwards we will 
+                average the results. 
+                <pre class="pre-code">
+                    <code>
+                        k=5
+                        n=int(len(data_texts)/k)
+                        k_texts=[data_texts[i:i + n] for i in range(0, len(data_texts), n)]
+                        n=int(len(data_labels)/k)
+                        k_labels=[data_labels[i:i + n] for i in range(0, len(data_labels), n)]
+                        k_results=[]
+                        k_confustion=[]
+                        
+                        
+                        for i in range(k):
+                          test_texts=k_texts[i]
+                          test_labels=k_labels[i]
+                          train_text=list(k_texts)
+                          train_labels=list(k_labels)
+                          train_texts.pop(i)
+                          train_labels.pop(i)
+                          train_texts=[item for sublist in train_texts for item in sublist]
+                          train_labels=[item for sublist in train_labels for item in sublist]
+                          train_texts, val_texts, train_labels, val_labels = train_test_split(data_texts, data_labels, test_size=.1)
+                          
+                        
+                        
+                          train_encodings = tokenizer(train_texts, truncation=True, padding=True)
+                          val_encodings = tokenizer(val_texts, truncation=True, padding=True)
+                          test_encodings = tokenizer(test_texts, truncation=True, padding=True)
+                        
+                          train_dataset = FakeNewsDataset(train_encodings, train_labels)
+                          val_dataset = FakeNewsDataset(val_encodings, val_labels)
+                          test_dataset = FakeNewsDataset(test_encodings, test_labels)
+                        
+                          model = DistilBertForSequenceClassification.from_pretrained("distilbert-base-uncased", num_labels=6)
+                        
+                          trainer = Trainer(
+                              model=model,                         # the instantiated Transformers model to be trained
+                              args=training_args,                  # training arguments, defined above
+                              train_dataset=train_dataset,         # training dataset
+                              eval_dataset=val_dataset             # evaluation dataset
+                          )
+                        
+                          trainer.train()
+                          prediction=trainer.predict(test_dataset)
+                          k_results.append(compute_metrics(prediction))
+                          k_confustion.append(confusion_matrix(test_labels, prediction.predictions.argmax(-1)))
+                    </code>
+                  </pre>
+            </p>
+        </div>
+    </section>
+    <br id='section7'>
+    <section class="m-0 p-4 body-primary">
+        <div class="container">
+            <h3 class="mb-3" >Results</h3>
+            <p>Averaging our results and displaying them. On my runs I would get 90% accuracy after 2 hrs of training. My own attempts to identify fake news were less good.
+                80% less good. 
+                <pre class="pre-code">
+                    <code>
+                        acc=0
+                        f1=0
+                        prec=0
+                        recall=0
+                        Y=[[0,0,0,0,0,0],
+                           [0,0,0,0,0,0],
+                           [0,0,0,0,0,0],
+                           [0,0,0,0,0,0],
+                           [0,0,0,0,0,0],
+                           [0,0,0,0,0,0]]
+                        for i in range(k):
+                          acc+=k_results[i]['accuracy']
+                          f1+=k_results[i]['f1']
+                          prec+=k_results[i]['precision']
+                          recall+=k_results[i]['recall']
+                          X=k_confustion[i]
+                          for a in range(len(X)):    
+                            for b in range(len(X[0])): 
+                                Y[a][b] = X[a][b] + Y[a][b]
+                        print('Accuracy:',acc/k,'f1:',f1/k,'precision:',prec/k,'recall:',recall/k)
+                        for i in Y:
+                          print(i)
+                    </code>
+                  </pre>
+                  My Results:
+                  <pre class="pre-code">
+                    <code>
+                        Accuracy: 0.9086004691164973 f1: 0.9087546732056859 precision: 0.9096079837306068 recall: 0.9086004691164973
+                        [1851, 77, 59, 12, 51, 3]
+                        [48, 2259, 72, 29, 40, 6]
+                        [32, 79, 2366, 43, 106, 1]
+                        [12, 47, 75, 1907, 54, 8]
+                        [29, 57, 64, 46, 2299, 12]
+                        [7, 11, 19, 22, 48, 939]
+                    </code>
+                  </pre>That about covers my small tutorial. I hope it has been helpful to you. 
+            </p>
+        </div>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+        crossorigin="anonymous"></script>
+    <script src="./assets/js/app.js"></script>
+</body>
+
+</html>
